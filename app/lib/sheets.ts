@@ -11,7 +11,7 @@ export async function saveEmail(email: string) {
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range: "Sheet1!A:B",
+    range: "A:B",
     valueInputOption: "RAW",
     requestBody: {
       values: [[email, new Date().toISOString()]],

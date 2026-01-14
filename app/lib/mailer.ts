@@ -11,43 +11,74 @@ export async function sendMail(to: string) {
   });
 
   await transporter.sendMail({
-    from: process.env.GMAIL_USER,
+    from: `"Vikesh Kumar Mahto" <${process.env.GMAIL_USER}>`,
     to,
     subject: "Application for Software Developer Position",
-    text: `
-Hi HR,
+    html: `
+      <div style="font-family: Arial, Helvetica, sans-serif; color: #222; line-height: 1.6; max-width: 600px;">
+        
+        <p>Hi <strong>Hiring Team</strong>,</p>
 
-I hope you’re doing well.
+        <p>
+          I hope you’re doing well.
+        </p>
 
-I’m Vikesh Kumar Mahto, a Full Stack Developer with 1.5+ years of hands-on experience building scalable, production-ready web applications using React, Next.js, Node.js, Express, MongoDB, and AWS.
+        <p>
+          My name is <strong>Vikesh Kumar Mahto</strong>, a 
+          <strong>Full Stack Developer</strong> with <strong>1.5+ years</strong> of hands-on experience
+          building scalable, production-ready web applications.
+        </p>
 
-Currently, I’m working as a Software Engineer where I:
+        <p>
+          I specialize in:
+          <strong>React, Next.js, Node.js, Express, MongoDB, and AWS</strong>.
+        </p>
 
-• Built end-to-end MERN features used by real customers
+        <p>
+          In my current role as a <strong>Software Engineer</strong>, I have:
+        </p>
 
-• Improved performance and load speed by 40–60%
+        <ul style="padding-left: 18px;">
+          <li><strong>Built</strong> end-to-end MERN features used by real customers</li>
+          <li><strong>Improved</strong> performance and load speed by <strong>40–60%</strong></li>
+          <li><strong>Implemented</strong> secure authentication, role-based access, and payment integrations</li>
+          <li><strong>Delivered</strong> projects from idea to production in agile environments</li>
+        </ul>
 
-• Implemented secure authentication, role-based access, and payment integrations
+        <p>
+          I enjoy solving real-world problems, writing clean and maintainable code, and
+          taking ownership of features from start to finish.
+        </p>
 
-• Delivered projects from idea to production in agile environments
+        <p>
+          I’ve attached my resume for your review. I would really appreciate the opportunity
+          to discuss how I can contribute to your engineering team.
+        </p>
 
-I enjoy solving real-world problems, writing clean code, and taking ownership of features. I believe my skills and mindset would allow me to add value to your engineering team from day one.
+        <p>
+          Looking forward to hearing from you.
+        </p>
 
-I’ve attached my resume for your review. I’d really appreciate the opportunity to discuss how I can contribute to your team.
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
 
-Looking forward to hearing from you.
+        <p style="margin-bottom: 4px;">
+          <strong>Best regards,</strong><br />
+          <strong>Vikesh Kumar Mahto</strong>
+        </p>
 
-Best regards,
-Vikesh Kumar Mahto
-Ranchi, India
-kumarvikesh287@gmail.com
-+91 8797717751
-LinkedIn: linkedin.com/in/vikesh-kumar-mahto-15b5a722b
-GitHub: github.com/vikeshub
-`,
+        <p style="font-size: 14px; color: #555;">
+          Ranchi, India<br />
+           <a href="mailto:kumarvikesh287@gmail.com">kumarvikesh287@gmail.com</a><br />
+           +91 8797717751<br />
+           <a href="https://linkedin.com/in/vikesh-kumar-mahto-15b5a722b">LinkedIn</a> |
+          <a href="https://github.com/vikeshub">GitHub</a>
+        </p>
+
+      </div>
+    `,
     attachments: [
       {
-        filename: "vikeshResume.pdf",
+        filename: "Vikesh_Kumar_Mahto_Resume.pdf",
         path: path.join(process.cwd(), "public/vikeshResume.pdf"),
       },
     ],
