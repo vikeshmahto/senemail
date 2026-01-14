@@ -13,7 +13,7 @@ export async function sendMail(to: string) {
   await transporter.sendMail({
     from: process.env.GMAIL_USER,
     to,
-    subject: "Full Stack Developer | MERN, React, Node | Immediate Availability",
+    subject: "Application for Software Developer Position",
     text: `
 Hi HR,
 
