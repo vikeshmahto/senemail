@@ -38,7 +38,8 @@ export default function Home() {
       }}>
         <h2 style={{ margin: "0 0 24px", fontSize: 24, fontWeight: 600, color: "#333" }}>Resume Email Sender</h2>
         <input
-          placeholder="Enter email"
+          type="email"
+          placeholder="example@company.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={{
