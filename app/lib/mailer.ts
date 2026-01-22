@@ -1,6 +1,14 @@
 import nodemailer from "nodemailer";
 import path from "path";
 
+const subjects = [
+  "Full Stack Developer | MERN, React, Node | Immediate Availability",
+  "Full Stack Developer Application ",
+  "Resume for Full Stack Developer",
+  "Resume for Software Engineer",
+  "Application for Software Developer",
+];
+
 export async function sendMail(to: string) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -10,10 +18,12 @@ export async function sendMail(to: string) {
     },
   });
 
+  const subject = subjects[Math.floor(Math.random() * subjects.length)];
+
   await transporter.sendMail({
     from: `"Vikesh Kumar Mahto" <${process.env.GMAIL_USER}>`,
     to,
-    subject: "Application for Software Developer Position",
+    subject,
     html: `
       <div style="font-family: Arial, Helvetica, sans-serif; color: #222; line-height: 1.6; max-width: 600px;">
         
@@ -76,6 +86,9 @@ export async function sendMail(to: string) {
 
       </div>
     `,
+    headers: {
+      "X-Mailer": "Nodemailer",
+    },
     attachments: [
       {
         filename: "Vikesh_Kumar_Mahto_Resume.pdf",

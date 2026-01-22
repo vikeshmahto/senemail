@@ -19,6 +19,7 @@ export async function POST(req: Request) {
   const sanitizedEmail = normalizeEmail(email);
 
   await sendMail(sanitizedEmail);
+  await new Promise(res => setTimeout(res, 2 * 60 * 1000)); // 2 min gap
   await saveEmail(sanitizedEmail);
 
   return NextResponse.json({ success: true });
