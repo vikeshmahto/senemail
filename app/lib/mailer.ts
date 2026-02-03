@@ -4,7 +4,7 @@ import path from "path";
 const subjects = [
   "Full Stack Developer | MERN, React, Node | Immediate Availability",
   "Full Stack Developer Application ",
-  "Resume for Full Stack Developer",
+  "Resume for Full Stack Developer Position",
   "Resume for Software Engineer",
   "Application for Software Developer",
 ];
