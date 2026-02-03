@@ -8,6 +8,7 @@ const subjects = [
   "Resume for Software Engineer",
   "Application for Software Developer",
   "Software Developer Application",
+  "Experienced Full Stack Developer Seeking New Opportunities",
 ];
 
 export async function sendMail(to: string) {
