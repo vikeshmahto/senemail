@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { sendMail } from "../../lib/mailer";
-import { saveEmail } from "../../lib/sheets";
+import { emailQueue } from "../../lib/queue";
 
 function normalizeEmail(email: string) {
   return email
-    .normalize("NFKD")       // normalize unicode
-    .replace(/[^\x00-\x7F]/g, "") // remove non-ASCII
+    .normalize("NFKD")
+    .replace(/[^\x00-\x7F]/g, "")
     .trim();
 }
 
@@ -18,9 +17,20 @@ export async function POST(req: Request) {
 
   const sanitizedEmail = normalizeEmail(email);
 
-  await sendMail(sanitizedEmail);
-  await new Promise(res => setTimeout(res, 2 * 60 * 1000)); // 2 min gap
-  await saveEmail(sanitizedEmail);
+  try {
+    await emailQueue.add(
+      "send-email",
+      { email: sanitizedEmail },
+      {
+        delay: 2 * 60 * 1000, // 2 minutes
+        attempts: 3,
+      }
+    );
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, queued: true });
+  } catch (err) {
+    console.error("Failed to enqueue job", err);
+    return NextResponse.json({ error: "Queue error" }, { status: 500 });
+  }
 }
+
