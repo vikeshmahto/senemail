@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     
     // Production: use QStash
     await qstash.publishJSON({
-      url: `${process.env.VERCEL_URL}/api/worker`,
+      url: `https://${process.env.VERCEL_URL}/api/worker`,
       body: { email: sanitizedEmail },
       delay: 120, // 2 minutes in seconds
     });
