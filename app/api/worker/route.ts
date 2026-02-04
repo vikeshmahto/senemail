@@ -1,7 +1,8 @@
+import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 import { sendMail } from "../../lib/mailer";
 import { saveEmail } from "../../lib/sheets";
 
-export async function POST(req: Request) {
+async function handler(req: Request) {
   const { email } = await req.json();
 
   if (!email) {
@@ -17,3 +18,5 @@ export async function POST(req: Request) {
     return new Response("error", { status: 500 });
   }
 }
+
+export const POST = verifySignatureAppRouter(handler);
