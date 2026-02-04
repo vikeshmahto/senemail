@@ -10,9 +10,8 @@
     "worker": "ts-node-esm scripts/worker.ts"
   },
   "dependencies": {
-    "bullmq": "^5.67.2",
+    "@upstash/qstash": "^2.9.0",
     "googleapis": "^170.0.0",
-    "ioredis": "^5.9.2",
     "next": "16.1.1",
     "nodemailer": "^7.0.12",
     "react": "19.2.3",

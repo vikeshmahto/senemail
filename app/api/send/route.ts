@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { emailQueue } from "../../lib/queue";
+import { qstash } from "../../lib/qstash";
 
 function normalizeEmail(email: string) {
   return email
@@ -18,16 +18,33 @@ export async function POST(req: Request) {
   const sanitizedEmail = normalizeEmail(email);
 
   try {
-    await emailQueue.add(
-      "send-email",
-      { email: sanitizedEmail },
-      {
-        delay: 2 * 60 * 1000, // 2 minutes
-        attempts: 3,
-      }
-    );
+    // For local development, call worker directly since QStash can't reach localhost
+    if (process.env.NODE_ENV === 'development') {
+      // Simulate delay with setTimeout
+      setTimeout(async () => {
+        try {
+          const response = await fetch('http://localhost:3000/api/worker', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: sanitizedEmail })
+          });
+          console.log('Local worker response:', response.status);
+        } catch (err) {
+          console.error('Local worker failed:', err);
+        }
+      }, 120000); // 2 minutes
+      
+      return NextResponse.json({ success: true, queued: true, mode: 'local' });
+    }
+    
+    // Production: use QStash
+    await qstash.publishJSON({
+      url: `${process.env.VERCEL_URL}/api/worker`,
+      body: { email: sanitizedEmail },
+      delay: 120, // 2 minutes in seconds
+    });
 
-    return NextResponse.json({ success: true, queued: true });
+    return NextResponse.json({ success: true, queued: true, mode: 'qstash' });
   } catch (err) {
     console.error("Failed to enqueue job", err);
     return NextResponse.json({ error: "Queue error" }, { status: 500 });
