@@ -3,10 +3,7 @@ import { sendMail } from "../../lib/mailer";
 import { saveEmail } from "../../lib/sheets";
 
 async function handler(req: Request) {
-  console.log("Worker called with headers:", Object.fromEntries(req.headers.entries()));
-  
   const { email } = await req.json();
-  console.log("Processing email:", email);
 
   if (!email) {
     return new Response("Email required", { status: 400 });
@@ -15,7 +12,6 @@ async function handler(req: Request) {
   try {
     await sendMail(email);
     await saveEmail(email);
-    console.log("Email processed successfully:", email);
     return new Response("ok");
   } catch (err) {
     console.error("Worker failed", err);
@@ -23,4 +19,7 @@ async function handler(req: Request) {
   }
 }
 
-export const POST = verifySignatureAppRouter(handler);
+// Skip verification in development
+export const POST = process.env.NODE_ENV === 'development' 
+  ? handler 
+  : verifySignatureAppRouter(handler);
