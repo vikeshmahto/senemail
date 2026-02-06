@@ -10,9 +10,25 @@ async function handler(req: Request) {
   }
 
   try {
-    await sendMail(email);
+    let emailSent = false;
+    let emailError = null;
+    
+    try {
+      await sendMail(email);
+      emailSent = true;
+    } catch (mailError) {
+      emailError = mailError;
+      console.error("Email sending failed:", mailError);
+    }
+    
+    // Always try to save to sheets
     await saveEmail(email);
-    return new Response("ok");
+    
+    if (emailSent) {
+      return new Response("ok");
+    } else {
+      return new Response(`Email saved but sending failed: ${(emailError as Error)?.message}`, { status: 207 });
+    }
   } catch (err) {
     console.error("Worker failed", err);
     return new Response("error", { status: 500 });
